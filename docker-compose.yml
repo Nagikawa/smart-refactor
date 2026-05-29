@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+  backend-core:
+    build: ./backend-core
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+
+  analyzer-engine:
+    build: ./analyzer-engine
+    volumes:
+      - ./analyzer-engine:/app
+    environment:
+      - [cite_start]LLM_API_ENDPOINT=http://host.docker.internal:11434 # 指向你本地的 Ollama/Gemma [cite: 6]
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
