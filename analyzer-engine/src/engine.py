@@ -1,4 +1,5 @@
 import os
+import json
 from miner import GitMiner
 from metrics import CodeMetricsExtractor
 
@@ -44,9 +45,7 @@ class SmartRefactorEngine:
 
         return repository_report
 
-# ---------------------------------------------------------
-# pipelines for local functional testing of the metrics extractor
-# ---------------------------------------------------------
+
 if __name__ == "__main__":
     TEST_REPO = "https://github.com/pallets/click.git"
     LOCAL_DIR = "./test_repos/click"
@@ -54,14 +53,4 @@ if __name__ == "__main__":
     engine = SmartRefactorEngine(TEST_REPO, LOCAL_DIR)
     analysis_results = engine.analyze_repository()
 
-    print("\n🚀 SmartRefactor engine analysis complete! Comprehensive academic report as follows")
-    print("-" * 75)
-    
-    for item in analysis_results:
-        m = item["metrics"]
-        print(f"📁 file: {item['file_name']}")
-        print(f"   📍 path: {item['relative_path']}")
-        print(f"   🔴 historical bug fixes: {item['bug_fix_count']} times")
-        print(f"   📊 static code metrics -> lines of code (LOC): {m['loc']} | logical lines of code (LLOC): {m['lloc']} | comment lines: {m['comments']}")
-        print(f"   🧠 cyclomatic complexity -> average: {m['avg_complexity']:.2f} | maximum: {m['max_complexity']}")
-        print("-" * 75)
+    print(json.dumps(analysis_results, ensure_ascii=False))

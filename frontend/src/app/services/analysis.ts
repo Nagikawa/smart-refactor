@@ -21,7 +21,7 @@ export interface FileMetrics {
   providedIn: 'root'
 })
 export class AnalysisService {
-  private apiUrl = 'http://localhost:5000/api/analyze';
+  private apiUrl = 'http://localhost:5001/api/analyze';
 
   private _reportData = signal<FileMetrics[]>([]);
   private _isLoading = signal<boolean>(false);
