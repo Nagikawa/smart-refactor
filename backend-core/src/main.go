@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"log"
 	"net/http"
 	"os/exec"
+	"runtime"
+	"path/filepath"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -34,6 +38,13 @@ func main() {
 func handleAnalyze(c *gin.Context) {
 	var req AnalyzeRequest
 
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := filepath.Dir(filename)
+
+	pythonExec := filepath.Join(currentDir, "..", "..", "analyzer-engine", "venv", "bin", "python")
+
+	pythonScript := filepath.Join(currentDir, "..", "..", "analyzer-engine", "src", "engine.py")
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Parameters: repoUrl is required"})
 		return
@@ -43,14 +54,18 @@ func handleAnalyze(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
-	// core point: using Go's os/exec to call our Python data mining engine
-	// here we assume we are running locally and the command to call is: python ../analyzer-engine/src/engine.py
-	// in real deployment, we can configure the path to the Python script via environment variable
-	cmd := exec.CommandContext(ctx, "python", "../analyzer-engine/src/engine.py")
+	log.Printf("🚀 Go 正在调用绝对路径 Python: %s", pythonExec)
+	log.Printf("📂 目标脚本: %s", pythonScript)
+
+	cmd := exec.CommandContext(ctx, pythonExec, pythonScript)
+
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
 
 	// get the output of the Python script, which is expected to be a JSON string containing the analysis results
 	output, err := cmd.Output()
 	if err != nil {
+		log.Printf("Error executing Python script: %v, stderr: %s", err, stderr.String())
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Python Analysis Engine Execution Failed",
 			"details": err.Error(),

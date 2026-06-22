@@ -16,9 +16,6 @@ interface FileMetrics {
   styleUrls: ['./dashboard.scss']
 })
 export class DashboardComponent implements OnInit {
-  analysisData = signal<FileMetrics[]>([]);
-  isLoading = signal<boolean>(false);
-
   public analysisService = inject(AnalysisService);
 
   constructor() {}

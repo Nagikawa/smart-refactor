@@ -49,6 +49,7 @@ export class AnalysisService {
 
     this.http.post<FileMetrics[]>(this.apiUrl, { repoUrl }).pipe(
       tap((data) => {
+        console.log('123456', data)
         this._reportData.set(data);
         this._isLoading.set(false);
       }),

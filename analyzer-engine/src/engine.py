@@ -10,16 +10,11 @@ class SmartRefactorEngine:
         self.miner = GitMiner(repo_url, local_path)
 
     def analyze_repository(self):
-        print("==================================================")
         # 1. find the top bug-prone files based on historical bug-fix commits
         top_bug_files = self.miner.mine_bug_fixes()
         
         # 2. store the merged final analysis dataset
         repository_report = []
-
-        print("\n==================================================")
-        print(f"🔥 Starting multi-dimensional static feature extractor, deeply analyzing Top {len(top_bug_files)} risky files...")
-        print("==================================================")
 
         for file_path, fix_count in top_bug_files:
             # get file path in local repo
@@ -48,7 +43,9 @@ class SmartRefactorEngine:
 
 if __name__ == "__main__":
     TEST_REPO = "https://github.com/pallets/click.git"
-    LOCAL_DIR = "./test_repos/click"
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    LOCAL_DIR = os.path.join(BASE_DIR, "..", "test_repos", "click")
 
     engine = SmartRefactorEngine(TEST_REPO, LOCAL_DIR)
     analysis_results = engine.analyze_repository()

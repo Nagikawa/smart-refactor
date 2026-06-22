@@ -16,10 +16,8 @@ class GitMiner:
     def clone_or_open_repo(self):
         """Clone the repository if it doesn't exist, otherwise open it."""
         if os.path.exists(os.path.join(self.local_path, '.git')):
-            print(f"Opening existing repository at {self.local_path}")
             self.repo = Repo(self.local_path)
         else:
-            print(f"Cloning repository from {self.repo_url} to {self.local_path}")
             self.repo = Repo.clone_from(self.repo_url, self.local_path)
         return self.repo
 
@@ -37,8 +35,6 @@ class GitMiner:
         total_commit_count = 0
         bug_prone_files = Counter()
 
-        print("Mining commits for bug fixes...")
-
         for commit in self.repo.iter_commits():
             total_commit_count += 1
             message = commit.message
@@ -54,8 +50,6 @@ class GitMiner:
 
                         if file_path.endswith(('.js', '.ts', '.java', '.py', '.cpp', '.c', '.php', '.go')):
                             bug_prone_files[file_path] += 1
-
-        print(f"Mined {fix_commit_count} bug fix commits out of {total_commit_count} total commits.")
         return bug_prone_files.most_common(20)
 
 if __name__ == "__main__":
