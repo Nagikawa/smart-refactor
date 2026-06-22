@@ -1,18 +1,24 @@
 <div class="dashboard-container">
-      <div *ngIf="analysisService.isLoading()" class="loading-status">
-        🚀 正在逆向挖掘 Git 歷史並分析複雜度特徵... 請稍候...
-      </div>
+    @if (analysisService.isLoading()) {
+        <div class="loading-status">
+            🚀 正在逆向挖掘 Git 歷史並分析複雜度特徵... 請稍候...
+        </div>
+    }
 
-      <div *ngIf="analysisService.error()" class="error-banner">
-        ⚠️ {{ analysisService.error() }}
-      </div>
+    @if (analysisService.error()) {
+        <div class="error-status">
+            ⚠️ 發生錯誤：{{ analysisService.error() }}
+        </div>
+    }
 
-      <div *ngIf="analysisService.mostDangerousFile() as topRisk" class="alert-card">
-        🚨 <strong>核心技術債警告：</strong> 檔案 <code>{{ topRisk.file_name }}</code> 歷史缺陷修復高達 <strong>{{ topRisk.bug_fix_count }}</strong> 次，最大圈複雜度為 <strong>{{ topRisk.metrics.max_complexity }}</strong>。強烈建議優先重構！
-      </div>
+    @if (analysisService.mostDangerousFile() as topRisk) {
+        <div class="alert-card">
+            🚨 <strong>核心技術債警告：</strong> 檔案 <code>{{ topRisk.file_name }}</code> 歷史缺陷修復高達 <strong>{{ topRisk.bug_fix_count }}</strong> 次，最大圈複雜度為 <strong>{{ topRisk.metrics.max_complexity }}</strong>。強烈建議優先重構！
+        </div>
+    }
 
-      <div class="chart-wrapper" [hidden]="analysisService.isLoading() || analysisService.reportData().length === 0">
+    <div class="chart-wrapper" [hidden]="analysisService.isLoading() || analysisService.reportData().length === 0">
         <h3>📊 Top 20 程式碼檔案風險度量分佈（Bug 頻次 vs 最大圈複雜度）</h3>
         <div #chartDom class="echarts-dom"></div>
-      </div>
     </div>
+</div>
