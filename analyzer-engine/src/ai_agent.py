@@ -53,10 +53,9 @@ class RefactorAgent:
             return f"⚠️ Failed to connect to local AI model: {str(e)}"
 
 # ---------------------------------------------------------
-# 本地 Agent 功能测试
+# Test the RefactorAgent with a mock high-risk file data
 # ---------------------------------------------------------
 if __name__ == "__main__":
-    # 模拟一个从 engine.py 传过来的高风险文件数据
     mock_data = {
         "file_name": "core_logic.py",
         "bug_fix_count": 12,

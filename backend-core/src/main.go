@@ -54,9 +54,6 @@ func handleAnalyze(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
-	log.Printf("🚀 Go 正在调用绝对路径 Python: %s", pythonExec)
-	log.Printf("📂 目标脚本: %s", pythonScript)
-
 	cmd := exec.CommandContext(ctx, pythonExec, pythonScript)
 
 	var stderr bytes.Buffer

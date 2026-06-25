@@ -1,6 +1,7 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { signal, computed, Service, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
+import { NotificationService } from '../notification/notification';
 
 export interface FileMetrics {
   file_name: string;
@@ -17,9 +18,7 @@ export interface FileMetrics {
   ai_advice?: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class AnalysisService {
   private apiUrl = 'http://localhost:5001/api/analyze';
 
@@ -37,7 +36,10 @@ export class AnalysisService {
     return data.reduce((prev, current) => (prev.bug_fix_count > current.bug_fix_count) ? prev : current);
   });
 
-  constructor(private http: HttpClient) {}
+  readonly hasData = computed(() => this._reportData().length > 0);
+
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
 
   /**
    * This method sends a POST request to the backend API to trigger the analysis of the specified repository.
@@ -46,16 +48,17 @@ export class AnalysisService {
   triggerAnalysis(repoUrl: string): void {
     this._isLoading.set(true);
     this._error.set(null);
+    this._reportData.set([]);
 
     this.http.post<FileMetrics[]>(this.apiUrl, { repoUrl }).pipe(
       tap((data) => {
-        console.log('123456', data)
         this._reportData.set(data);
         this._isLoading.set(false);
       }),
       catchError((err) => {
         this._error.set('Failed to fetch analysis report. Please try again later.');
         this._isLoading.set(false);
+        this.notificationService.show('Failed to fetch analysis report. Please try again later.', 'error');
         throw err;
       })
     ).subscribe();

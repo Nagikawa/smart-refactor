@@ -1,0 +1,29 @@
+.welcome-hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 75vh;
+      text-align: center;
+      .hero-content { 
+        max-width: 800px; 
+        width: 100%; 
+        padding: 0 2rem;
+      }
+      h1 { font-size: 3.5rem; color: #007acc; margin-bottom: 0.5rem; }
+      .tagline { color: #888; font-size: 1.1rem; margin-bottom: 3rem; }
+    }
+    .analysis-screen {
+      padding: 2rem;
+      .top-nav-search {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #333;
+        margin-bottom: 2rem;
+        h2 { font-size: 1.5rem; color: #007acc; margin: 0; }
+        .nav-search-wrapper {
+          width: 400px;
+        }
+      }
+    }

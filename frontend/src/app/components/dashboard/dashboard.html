@@ -1,0 +1,23 @@
+<app-notification-toast></app-notification-toast>
+
+    @if (!analysisService.hasData()) {
+      <div class="welcome-hero">
+        <div class="hero-content">
+          <h1 class="animate-pop">🛠️ SmartRefactor</h1>
+          <p class="tagline">AI-powered Code Repository Defect Prediction and Refactoring Agent</p>
+          
+          <app-repo-search (searchTriggered)="onStartAnalysis($event)"></app-repo-search>
+        </div>
+      </div>
+    } @else {
+      <div class="analysis-screen">
+        <div class="top-nav-search">
+          <h2>🛠️ SmartRefactor</h2>
+          <div class="nav-search-wrapper">
+            <app-repo-search (searchTriggered)="onStartAnalysis($event)"></app-repo-search>
+          </div>
+        </div>
+        
+        <!-- <app-analysis-result></app-analysis-result> -->
+      </div>
+    }

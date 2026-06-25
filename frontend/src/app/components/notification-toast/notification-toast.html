@@ -1,0 +1,13 @@
+@if (notificationService.toast(); as toast) {
+    <div 
+        class="toast-container animate-slide-in"
+        [ngClass]="toast.type"
+    >
+        <div class="toast-glow"></div>
+        <div class="toast-content">
+        <span class="icon">{{ toast.type === 'error' ? '🚨' : '⚠️' }}</span>
+        <span class="message">{{ toast.message }}</span>
+        <button class="close-btn" (click)="notificationService.clear()">×</button>
+        </div>
+    </div>
+}

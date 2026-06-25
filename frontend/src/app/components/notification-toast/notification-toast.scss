@@ -1,0 +1,77 @@
+.toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 450px;
+  background: rgba(1, 2, 1, 0.85); // 深色半透明
+  backdrop-filter: blur(8px);       // 高階毛玻璃效果
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  // 不同特性的外發光
+  &.error {
+    border: 1px solid rgba(255, 77, 79, 0.5);
+    box-shadow: 0 4px 24px rgba(255, 77, 79, 0.3);
+    .toast-glow { background: conic-gradient(from 0deg, #ff4d4f, transparent); }
+  }
+
+  &.warning {
+    border: 1px solid rgba(255, 169, 64, 0.5);
+    box-shadow: 0 4px 24px rgba(255, 169, 64, 0.3);
+    .toast-glow { background: conic-gradient(from 0deg, #ffa940, transparent); }
+  }
+
+  .toast-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 0.95rem;
+    z-index: 2;
+
+    .icon {
+      font-size: 1.2rem;
+      margin-right: 12px;
+    }
+
+    .message {
+      flex: 1;
+      line-height: 1.4;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #c0b9c0;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding-left: 10px;
+      line-height: 1;
+      transition: color 0.2s;
+
+      &:hover { color: #ffffff; }
+    }
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
