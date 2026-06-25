@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AnalysisService } from '../../services/analysis/analysis.service';
 import { RepoSearch } from '../repo-search/repo-search';
 import { NotificationToast } from '../notification-toast/notification-toast';
+import { AnalysisResultComponent } from "../analysis-result/analysis-result";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RepoSearch, NotificationToast],
+  imports: [CommonModule, RepoSearch, NotificationToast, AnalysisResultComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
 })
